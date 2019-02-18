@@ -1,0 +1,14 @@
+<title>テストアプリ</title>
+<html>
+  <script>
+    const updateLux = async(url, element) => {
+      const sensorData = await fetch(url).then(response => response.text())
+      console.log(sensorData);
+      const target = document.getElementById(element)
+      target.innerHTML = `<h1>${sensorData}</h1>`
+    } 
+  </script>
+  <body onLoad="updateLux('/lux', 'data')">
+    <dib id = "data"></data>
+  </body>
+</html>
