@@ -16,8 +16,10 @@ app.route('/lux')
     
    // luxデータ取得
    .get(async (req, res) => {
-     const fileData = await promisify(fs.readFile)('./sensorData.csv', {encoding : 'utf8'}) .catch(err => res.send(err));
-     res.send(fileData);
+     const lux = await promisify(fs.readFile)('./sensorData.csv', {encoding : 'utf8'}) 
+                       .then(fileData => fileData.split(",")[1])
+                       .catch(err => res.send(err));
+     res.send(lux);
    })
    
    // luxデータ書き込み(上書き)
