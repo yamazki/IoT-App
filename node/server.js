@@ -9,25 +9,29 @@ const port = 17123;
 
 // htmlのreturn
 app.get('/' , (req, res) => {
-  res.sendfile('./index.html');
+  res.sendFile('./index.html');
 });
 
 app.route('/lux')
     
    // luxデータ取得
    .get(async (req, res) => {
-     const lux = await promisify(fs.readFile)('./sensorData.csv', {encoding : 'utf8'}) 
-                       .then(fileData => fileData.split(",")[1])
-                       .catch(err => res.send(err));
+     const lux = await promisify(fs.readFile)
+                                ('./sensorData.csv', {encoding : 'utf8'}) 
+                                .then(fileData => fileData.split(",")[1])
+                                .catch(err => res.send(err));
      res.send(lux);
    })
    
    // luxデータ書き込み(上書き)
    .put(async (req, res) => {
      res.setHeader('Content-Type', 'text/plain');
-     promisify(fs.writeFile)('./sensorData.csv', req.body.id + "," + req.body.lux, 'utf-8')
-       .then(() => res.send("succeeded to write file"))
-       .catch(err => {
+     const id = req.body.id;
+     const lux = req.body.lux;
+     promisify(fs.writeFile)
+              ('./sensorData.csv', id + "," + lux, 'utf-8')
+              .then(() => res.send("succeeded to write file"))
+              .catch(err => {
          console.log(err);
          res.send("failed to write file");
        });
