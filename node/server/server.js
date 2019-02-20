@@ -9,7 +9,7 @@ const port = 17123;
 
 // htmlのreturn
 app.get('/' , (req, res) => {
-  res.sendFile('./index.html');
+  res.sendFile( __dirname + '/index.html');
 });
 
 app.route('/lux')
@@ -19,7 +19,10 @@ app.route('/lux')
      const lux = await promisify(fs.readFile)
                                 ('./sensorData.csv', {encoding : 'utf8'}) 
                                 .then(fileData => fileData.split(",")[1])
-                                .catch(err => res.send(err));
+                                .catch(err => {
+                                        console.log(err);
+                                        res.send(err);
+                                      })
      res.send(lux);
    })
    
@@ -32,8 +35,8 @@ app.route('/lux')
               ('./sensorData.csv', id + "," + lux, 'utf-8')
               .then(() => res.send("succeeded to write file"))
               .catch(err => {
-         console.log(err);
-         res.send("failed to write file");
+                       console.log(err);
+                       res.send("failed to write file");
        });
     });
 

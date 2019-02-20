@@ -1,7 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 app = Flask(__name__)
 file_name = "./sensorData.csv"
 myPort = 17123
+
+@app.route('/', methods=['GET'])
+def get_html():
+  return render_template('./index.html')
 
 @app.route('/lux', methods=['GET'])
 def get_lux():
@@ -9,12 +13,12 @@ def get_lux():
     f = open(file_name, 'r')
     for row in f:
       lux = row.split(",")[1]
+    return lux
   except Exception as e:
     print(e)
     return e
   finally:
     f.close()
-  return lux
   
 @app.route('/lux', methods=['PUT'])
 def update_lux():
