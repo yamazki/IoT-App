@@ -27,12 +27,12 @@ app.route('/lux')
    })
    
    // luxデータ書き込み(上書き)
-   .put(async (req, res) => {
+   .post(async (req, res) => {
      res.setHeader('Content-Type', 'text/plain');
-     const id = req.body.id;
+     const time = req.body.time;
      const lux = req.body.lux;
      promisify(fs.writeFile)
-              ('./sensorData.csv', id + "," + lux, 'utf-8')
+              ('./sensorData.csv', time + "," + lux, 'utf-8')
               .then(() => res.send("succeeded to write file"))
               .catch(err => {
                        console.log(err);

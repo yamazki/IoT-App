@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 app = Flask(__name__)
-file_name = "./sensorData.csv"
+file_path = "./sensorData.csv"
 myPort = 17123
 
 @app.route('/', methods=['GET'])
@@ -10,9 +10,9 @@ def get_html():
 @app.route('/lux', methods=['GET'])
 def get_lux():
   try:
-    f = open(file_name, 'r')
+    f = open(file_path, 'r')
     for row in f:
-      lux = row.split(",")[1]
+      lux = row
     return lux
   except Exception as e:
     print(e)
@@ -20,13 +20,13 @@ def get_lux():
   finally:
     f.close()
   
-@app.route('/lux', methods=['PUT'])
+@app.route('/lux', methods=['POST'])
 def update_lux():
-  id = request.form["id"]
+  time = request.form["time"]
   lux = request.form["lux"]
   try:
-    f = open(file_name, 'w')
-    f.write(id + "," + lux)
+    f = open(file_path, 'w')
+    f.write(time + "," + lux)
     return "succeeded to write"
   except Exception as e:
     print(e)
@@ -35,4 +35,4 @@ def update_lux():
     f.close()
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=myPort)
+    app.run(debug=True, host='0.0.0.0', port=myPort)
