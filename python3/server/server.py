@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 app = Flask(__name__)
-file_path = "./sensorData.csv"
+file_path = "./sensor_data.csv"
 myPort = 17123
 
 @app.route('/', methods=['GET'])
